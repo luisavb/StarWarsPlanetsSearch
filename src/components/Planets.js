@@ -1,7 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import FilterContext from '../context/FilterContext';
 
 function Planets() {
   const [planets, setPlanets] = useState([]);
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
+
+  const {
+    namePlanet,
+    // filterPlanet,
+    noLopping,
+    setNoLooping,
+  } = useContext(FilterContext);
 
   useEffect(() => {
     const fecthPlanets = async () => {
@@ -19,9 +28,20 @@ function Planets() {
             .filter(([key]) => key !== 'residents'))));
       console.log(withoutResidents);
       setPlanets(withoutResidents);
+      setFilteredPlanets(withoutResidents);
     };
     fecthPlanets();
   }, []);
+
+  useEffect(() => {
+    if (noLopping) {
+      const filterPlanets = planets
+        .filter((planet) => planet.name.toLowerCase()
+          .includes(namePlanet));
+      setFilteredPlanets(filterPlanets);
+      setNoLooping(false);
+    }
+  }, [noLopping, setNoLooping, planets, namePlanet]);
 
   return (
     <>
@@ -45,7 +65,8 @@ function Planets() {
           </tr>
         </thead>
         <tbody>
-          {planets.map((planet) => (
+          {/* --------REFATORAR DEPOIS------------ */}
+          {filteredPlanets.map((planet) => (
             <tr key={ planet.name }>
               <td>{planet.name}</td>
               <td>{planet.rotation_period}</td>
@@ -62,6 +83,7 @@ function Planets() {
               <td>{planet.url}</td>
             </tr>
           ))}
+          {/* --------REFATORAR DEPOIS------------ */}
         </tbody>
       </table>
     </>
