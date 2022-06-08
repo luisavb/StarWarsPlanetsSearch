@@ -10,9 +10,13 @@ function Inputs() {
     setNumericFilter,
   } = useContext(FilterContext);
 
+  const column = ['population',
+    'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+
   const [type, setType] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [valueFilter, setValueFilter] = useState(0);
+  const [options, setOptions] = useState(column);
 
   const handleChange = ({ target }) => {
     const { id, value } = target;
@@ -31,12 +35,18 @@ function Inputs() {
     }
   };
 
+  const deleteOptions = () => {
+    const newOptions = options.filter((option) => option !== type);
+    setOptions(newOptions);
+  };
+
   const filterButton = () => {
     const newNumericValues = {
       type,
       comparison,
       valueFilter,
     };
+    deleteOptions();
     setNumericFilter([...numericFilter, newNumericValues]);
     setNoLooping(true);
   };
@@ -54,11 +64,14 @@ function Inputs() {
       <label htmlFor="type">
         Filtro
         <select data-testid="column-filter" id="type" onChange={ handleChange }>
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {options.map((typeOfFilter, i) => (
+            <option
+              key={ `${typeOfFilter}-${i}` }
+              value={ typeOfFilter }
+            >
+              {typeOfFilter}
+            </option>
+          ))}
         </select>
       </label>
       <label htmlFor="operator">
