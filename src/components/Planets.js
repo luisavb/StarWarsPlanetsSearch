@@ -7,9 +7,9 @@ function Planets() {
 
   const {
     namePlanet,
-    // filterPlanet,
     noLopping,
     setNoLooping,
+    numericFilter,
   } = useContext(FilterContext);
 
   useEffect(() => {
@@ -39,9 +39,26 @@ function Planets() {
         .filter((planet) => planet.name.toLowerCase()
           .includes(namePlanet));
       setFilteredPlanets(filterPlanets);
+      console.log(numericFilter);
+      // --- REVER O REDUCER ---
+      const filterNumericPlanets = numericFilter
+        .reduce((accumalator, filter) => accumalator.filter((planet) => {
+          switch (filter.comparison) {
+          case 'maior que':
+            return planet[filter.type] > Number(filter.valueFilter);
+          case 'menor que':
+            return planet[filter.type] < Number(filter.valueFilter);
+          case 'igual a':
+            return Number(planet[filter.type]) === Number(filter.valueFilter);
+          default:
+            return true;
+          }
+        }), filterPlanets);
+      // --- REVER O REDUCER ---
+      setFilteredPlanets(filterNumericPlanets);
       setNoLooping(false);
     }
-  }, [noLopping, setNoLooping, planets, namePlanet]);
+  }, [noLopping, setNoLooping, planets, namePlanet, numericFilter]);
 
   return (
     <>
