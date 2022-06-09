@@ -3,7 +3,9 @@ import FilterContext from '../context/FilterContext';
 
 function Planets() {
   const [planets, setPlanets] = useState([]);
+  // onde é salvo o que é requisitado da api, sem filtro algum
   const [filteredPlanets, setFilteredPlanets] = useState([]);
+  // onde é salvo os planetas filtrados
 
   const {
     namePlanet,
@@ -38,8 +40,7 @@ function Planets() {
       const filterPlanets = planets
         .filter((planet) => planet.name.toLowerCase()
           .includes(namePlanet));
-      setFilteredPlanets(filterPlanets);
-      console.log(numericFilter);
+
       // --- REVER O REDUCER ---
       const filterNumericPlanets = numericFilter
         .reduce((accumalator, filter) => accumalator.filter((planet) => {
@@ -55,6 +56,7 @@ function Planets() {
           }
         }), filterPlanets);
       // --- REVER O REDUCER ---
+
       setFilteredPlanets(filterNumericPlanets);
       setNoLooping(false);
     }

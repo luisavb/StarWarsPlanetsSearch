@@ -38,6 +38,22 @@ function Inputs() {
   const deleteOptions = () => {
     const newOptions = options.filter((option) => option !== type);
     setOptions(newOptions);
+    setType(newOptions[0]);
+  };
+
+  const handleDeleteFilter = (columnType) => {
+    const newNumericFilter = numericFilter
+      .filter((filter) => filter.type !== columnType);
+    setNoLooping(true);
+    setNumericFilter(newNumericFilter);
+    console.log(newNumericFilter);
+    setOptions([...options, columnType]);
+  };
+
+  const handleDeleteAllFilters = () => {
+    setNoLooping(true);
+    setNumericFilter([]);
+    setOptions(column);
   };
 
   const filterButton = () => {
@@ -52,52 +68,77 @@ function Inputs() {
   };
 
   return (
-    <form>
-      <input
-        data-testid="name-filter"
-        id="name"
-        type="text"
-        placeholder="Search Name"
-        onChange={ handleChange }
-        value={ namePlanet }
-      />
-      <label htmlFor="type">
-        Filtro
-        <select data-testid="column-filter" id="type" onChange={ handleChange }>
-          {options.map((typeOfFilter, i) => (
-            <option
-              key={ `${typeOfFilter}-${i}` }
-              value={ typeOfFilter }
-            >
-              {typeOfFilter}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label htmlFor="operator">
-        Operador
-        <select data-testid="comparison-filter" id="operator" onChange={ handleChange }>
-          <option value="maior que">maior que</option>
-          <option value="menor que">menor que</option>
-          <option value="igual a">igual a</option>
-        </select>
-      </label>
-      <input
-        data-testid="value-filter"
-        id="value-filter"
-        type="number"
-        placeholder="Search by Filter"
-        onChange={ handleChange }
-        value={ valueFilter }
-      />
+    <div>
+      <form>
+        <input
+          data-testid="name-filter"
+          id="name"
+          type="text"
+          placeholder="Search Name"
+          onChange={ handleChange }
+          value={ namePlanet }
+        />
+        <label htmlFor="type">
+          Filtro
+          <select data-testid="column-filter" id="type" onChange={ handleChange }>
+            {options.map((typeOfFilter, i) => (
+              <option
+                key={ `${typeOfFilter}-${i}` }
+                value={ typeOfFilter }
+              >
+                { typeOfFilter }
+              </option>
+            ))}
+          </select>
+        </label>
+        <label htmlFor="operator">
+          Operador
+          <select data-testid="comparison-filter" id="operator" onChange={ handleChange }>
+            <option value="maior que">maior que</option>
+            <option value="menor que">menor que</option>
+            <option value="igual a">igual a</option>
+          </select>
+        </label>
+        <input
+          data-testid="value-filter"
+          id="value-filter"
+          type="number"
+          placeholder="Search by Filter"
+          onChange={ handleChange }
+          value={ valueFilter }
+        />
+        <button
+          data-testid="button-filter"
+          type="button"
+          onClick={ filterButton }
+        >
+          Filtrar
+        </button>
+      </form>
+
+      {numericFilter.map((filter) => (
+        <div data-testid="filter" key={ filter.type }>
+          <p>
+            { `Tem ${filter.type} ${filter.comparison} ${filter.valueFilter}` }
+          </p>
+          <button
+            type="button"
+            onClick={ () => handleDeleteFilter(filter.type) }
+          >
+            Delete Filter
+          </button>
+        </div>
+      ))}
+
       <button
-        data-testid="button-filter"
+        data-testid="button-remove-filters"
         type="button"
-        onClick={ filterButton }
+        onClick={ handleDeleteAllFilters }
       >
-        Filtrar
+        Delete All Filters
       </button>
-    </form>
+
+    </div>
   );
 }
 
