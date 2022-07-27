@@ -41,21 +41,22 @@ function Planets() {
         .filter((planet) => planet.name.toLowerCase()
           .includes(namePlanet));
 
-      // --- REVER O REDUCER ---
+      // --- REVER O REDUCER URGENTEMENTE ---
       const filterNumericPlanets = numericFilter
-        .reduce((accumalator, filter) => accumalator.filter((planet) => {
-          switch (filter.comparison) {
-          case 'maior que':
-            return planet[filter.type] > Number(filter.valueFilter);
-          case 'menor que':
-            return planet[filter.type] < Number(filter.valueFilter);
-          case 'igual a':
-            return Number(planet[filter.type]) === Number(filter.valueFilter);
-          default:
-            return true;
-          }
-        }), filterPlanets);
-      // --- REVER O REDUCER ---
+        .reduce((accumalator, filter) => accumalator
+          .filter((planet) => {
+            switch (filter.comparison) {
+            case 'maior que':
+              return planet[filter.type] > Number(filter.valueFilter);
+            case 'menor que':
+              return planet[filter.type] < Number(filter.valueFilter);
+            case 'igual a':
+              return Number(planet[filter.type]) === Number(filter.valueFilter);
+            default:
+              return true;
+            }
+          }), filterPlanets);
+      // --- REVER O REDUCER URGENTEMENTE ---
 
       setFilteredPlanets(filterNumericPlanets);
       setNoLooping(false);

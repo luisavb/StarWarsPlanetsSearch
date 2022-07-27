@@ -44,16 +44,16 @@ function Inputs() {
   const handleDeleteFilter = (columnType) => {
     const newNumericFilter = numericFilter
       .filter((filter) => filter.type !== columnType);
-    setNoLooping(true);
     setNumericFilter(newNumericFilter);
-    console.log(newNumericFilter);
+    setNoLooping(true); // SEMPRE LEMBRAR DE DECLARAR TRUE SE QUISER ABRIR AS PORTAS DO USEEFFECT
     setOptions([...options, columnType]);
   };
 
   const handleDeleteAllFilters = () => {
-    setNoLooping(true);
     setNumericFilter([]);
     setOptions(column);
+    setNamePlanet('');
+    setNoLooping(true);
   };
 
   const filterButton = () => {
